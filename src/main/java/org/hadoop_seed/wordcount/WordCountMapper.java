@@ -9,15 +9,17 @@ import java.io.IOException;
 import java.util.StringTokenizer;
 
 
-public class WordCountMapper extends Mapper<LongWritable,Text, Text,IntWritable> {
+public class WordCountMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
     private final static IntWritable UNO = new IntWritable(1);
+    private final Text word = new Text();
 
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         final String line = value.toString();
-        final StringTokenizer tokenizer=new StringTokenizer(line);
+        final StringTokenizer tokenizer = new StringTokenizer(line);
         while (tokenizer.hasMoreElements()) {
-            context.write(new Text(tokenizer.nextToken()),UNO);
+            word.set(tokenizer.nextToken());
+            context.write(word, UNO);
         }
     }
 }
