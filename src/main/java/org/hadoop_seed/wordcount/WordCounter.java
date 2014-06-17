@@ -15,10 +15,11 @@ public class WordCounter {
             System.err.println("Usage: WordCounter <input path> <output path>");
             System.exit(-1);
         }
+
         try {
-            Job job = Job.getInstance(new Configuration());
+            final Job job = Job.getInstance(new Configuration());
             job.setJarByClass(WordCounter.class);
-            job.setJobName("Max temperature");
+            job.setJobName("Word counter");
             FileInputFormat.addInputPath(job, new Path(args[0]));
             FileOutputFormat.setOutputPath(job, new Path(args[1]));
             job.setMapperClass(WordCountMapper.class);
