@@ -12,8 +12,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 public class WordCountTest {
     private MapDriver<LongWritable, Text, Text, IntWritable> mapDriver;
@@ -21,10 +22,8 @@ public class WordCountTest {
 
     @Before
     public void setUp() {
-        WordCountMapper mapper = new WordCountMapper();
-        WordCountReducer reducer = new WordCountReducer();
-        mapDriver = MapDriver.newMapDriver(mapper);
-        reduceDriver = ReduceDriver.newReduceDriver(reducer);
+        mapDriver = MapDriver.newMapDriver(new WordCountMapper());
+        reduceDriver = ReduceDriver.newReduceDriver(new WordCountReducer());
     }
 
     @Test
@@ -39,7 +38,7 @@ public class WordCountTest {
 
     @Test
     public void testReducer() throws IOException {
-        final List<IntWritable> values = new ArrayList<IntWritable>(Arrays.asList(new IntWritable(1),new IntWritable(1)));
+        final List<IntWritable> values = new ArrayList<IntWritable>(asList(new IntWritable(1), new IntWritable(1)));
         reduceDriver.withInput(new Text("lorem"), values);
         reduceDriver.withOutput(new Text("lorem"), new IntWritable(2));
         reduceDriver.runTest();
